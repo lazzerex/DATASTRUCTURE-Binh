@@ -71,7 +71,7 @@ namespace linkedlist_quanly
             this.ResumeLayout(false);
 
         }
-
+/*--------------Chỉnh sủa thêm form đăng nhập ở đây-----------------------------------------*/
         public MainForm()
         {
             // Show login form first
@@ -104,7 +104,7 @@ namespace linkedlist_quanly
             this.MouseUp += new MouseEventHandler(Form1_MouseUp);
             this.DoubleBuffered = true;
         }
-
+/*--------------Chỉnh sủa thêm form đăng nhập ở đây-----------------------------------------*/
         private void AddSamplePosts()
         {
 
@@ -180,7 +180,7 @@ namespace linkedlist_quanly
 
             return postTime.ToString("dd/MM/yyyy HH:mm:ss");
         }
-
+/*------------------------------CHỉnh sửa thêm xíu ở phần này---------------------------------------*/
         private void InitializeUI()
         {
             this.Size = new Size(320, 650);
@@ -360,7 +360,7 @@ namespace linkedlist_quanly
             RefreshPosts();
         }
 
-        private void RefreshPosts()
+        private void RefreshPosts()  //chỉnh sửa tên người đăng theo username dùng để đăng nhập
         {
             postsPanel.Controls.Clear();
 
