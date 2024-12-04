@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace linkedlist_quanly
 {
-    public class PostManager
+    public class PostManager    //thêm tính năng quản lý post ở đây
     {
         private const string POSTS_FILE = "posts.txt";
         private string filePath;
@@ -64,7 +64,7 @@ namespace linkedlist_quanly
             return posts;
         }
 
-        public void InitializeDefaultPosts(string username)
+        public void InitializeDefaultPosts(string username)    //default post khi tạo một tài khoản mới
         {
             var posts = LoadAllPosts();
             if (!posts.Any(p => p.Author == username))
@@ -83,14 +83,14 @@ namespace linkedlist_quanly
         }
     }
 
-    public class PostData
+    public class PostData        //quan ly post
     {
         public string Content { get; set; }
         public string MediaReference { get; set; }
         public DateTime PostTime { get; set; }
         public string Author { get; set; }
     }
-    public class User
+    public class User        //quan ly user
     {
         public string Username { get; set; }
         public string Password { get; set; }
@@ -149,7 +149,7 @@ namespace linkedlist_quanly
  }
 }*/
     /*-------------------------------------------------------------------------Test thu hash password-----------------------------------*/
-    public class UserManager
+    public class UserManager  //quản lý tài khoản của người dùng
     {
         private const string USER_FILE = "users.txt";
         private string filePath;
@@ -190,7 +190,7 @@ namespace linkedlist_quanly
             }
         }
 
-        public bool ValidateUser(string username, string password)
+        public bool ValidateUser(string username, string password)    //kiểm tra, xác thực tài khoản mới tạo
         {
             try
             {
@@ -208,7 +208,7 @@ namespace linkedlist_quanly
                 return false;
             }
         }
-        public string GetUserAvatar(string username)
+        public string GetUserAvatar(string username)    //đặt default avatar cho người dùng
         {
             try
             {
@@ -227,7 +227,7 @@ namespace linkedlist_quanly
             return "Resources/default-avatar.png";
         }
 
-        public bool UpdateUserAvatar(string username, string newAvatarPath)
+        public bool UpdateUserAvatar(string username, string newAvatarPath)    //update avatar
         {
             try
             {
@@ -251,7 +251,7 @@ namespace linkedlist_quanly
             return false;
         }
     }
-    public class LoginForm : Form
+    public class LoginForm : Form   //tạo form đăng nhập 
     {
         private TextBox txtUsername;
         private TextBox txtPassword;
@@ -380,7 +380,7 @@ namespace linkedlist_quanly
         }
     }
 
-    public class RegisterForm : Form
+    public class RegisterForm : Form                //tạo form cho đăng ký
     {
         private TextBox txtUsername;
         private TextBox txtPassword;
