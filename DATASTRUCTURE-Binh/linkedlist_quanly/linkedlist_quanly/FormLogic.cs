@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -15,7 +15,7 @@ using System.Windows.Forms;
 
 namespace linkedlist_quanly
 {
-    public class PostManager    //thêm tính năng quản lý post ở đây
+    public class PostManager
     {
         private const string POSTS_FILE = "posts.txt";
         private string filePath;
@@ -64,7 +64,7 @@ namespace linkedlist_quanly
             return posts;
         }
 
-        public void InitializeDefaultPosts(string username)    //default post khi tạo một tài khoản mới
+        public void InitializeDefaultPosts(string username)
         {
             var posts = LoadAllPosts();
             if (!posts.Any(p => p.Author == username))
@@ -83,14 +83,14 @@ namespace linkedlist_quanly
         }
     }
 
-    public class PostData        //quan ly post
+    public class PostData
     {
         public string Content { get; set; }
         public string MediaReference { get; set; }
         public DateTime PostTime { get; set; }
         public string Author { get; set; }
     }
-    public class User        //quan ly user
+    public class User
     {
         public string Username { get; set; }
         public string Password { get; set; }
@@ -149,7 +149,7 @@ namespace linkedlist_quanly
  }
 }*/
     /*-------------------------------------------------------------------------Test thu hash password-----------------------------------*/
-    public class UserManager  //quản lý tài khoản của người dùng
+    public class UserManager
     {
         private const string USER_FILE = "users.txt";
         private string filePath;
@@ -190,7 +190,7 @@ namespace linkedlist_quanly
             }
         }
 
-        public bool ValidateUser(string username, string password)    //kiểm tra, xác thực tài khoản mới tạo
+        public bool ValidateUser(string username, string password)
         {
             try
             {
@@ -208,7 +208,7 @@ namespace linkedlist_quanly
                 return false;
             }
         }
-        public string GetUserAvatar(string username)    //đặt default avatar cho người dùng
+        public string GetUserAvatar(string username)
         {
             try
             {
@@ -227,7 +227,7 @@ namespace linkedlist_quanly
             return "Resources/default-avatar.png";
         }
 
-        public bool UpdateUserAvatar(string username, string newAvatarPath)    //update avatar
+        public bool UpdateUserAvatar(string username, string newAvatarPath)
         {
             try
             {
@@ -251,7 +251,7 @@ namespace linkedlist_quanly
             return false;
         }
     }
-    public class LoginForm : Form   //tạo form đăng nhập 
+    public class LoginForm : Form
     {
         private TextBox txtUsername;
         private TextBox txtPassword;
@@ -380,14 +380,15 @@ namespace linkedlist_quanly
         }
     }
 
-    public class RegisterForm : Form                //tạo form cho đăng ký
+    public class RegisterForm : Form
     {
         private TextBox txtUsername;
         private TextBox txtPassword;
         private TextBox txtConfirmPassword;
         private Button btnRegister;
         private UserManager userManager;
-
+        private Button btnSelectAvatar;  // Thêm nút chọn ảnh
+        private string selectedAvatarPath;  // Để lưu đường dẫn ảnh đã chọn
         public RegisterForm()
         {
             userManager = new UserManager();
@@ -447,7 +448,7 @@ namespace linkedlist_quanly
             {
                 Text = "Đăng ký",
                 Location = new Point(120, 120),
-                Size = new Size(100, 30)
+                Size = new Size(150, 30)
             };
             btnRegister.Click += BtnRegister_Click;
 
@@ -457,6 +458,39 @@ namespace linkedlist_quanly
                 lblConfirmPassword, txtConfirmPassword,
                 btnRegister
             });
+
+            // Thêm nút chọn ảnh đại diện
+            btnSelectAvatar = new Button
+            {
+                Text = "Chọn ảnh đại diện",
+                Location = new Point(120, 160),
+                Size = new Size(150, 30)
+            };
+            btnSelectAvatar.Click += BtnSelectAvatar_Click;
+
+            this.Controls.AddRange(new Control[] {
+            lblUsername, txtUsername,
+            lblPassword, txtPassword,
+            lblConfirmPassword, txtConfirmPassword,
+            btnRegister,
+            btnSelectAvatar  // Thêm nút vào form
+            });
+        }
+        
+        //Xử lý sự kiện chọn ảnh đại diện
+        private void BtnSelectAvatar_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+                openFileDialog.Title = "Chọn ảnh đại diện";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    selectedAvatarPath = openFileDialog.FileName;
+                    MessageBox.Show("Đã chọn ảnh thành công!");
+                }
+            }
         }
 
         private void BtnRegister_Click(object sender, EventArgs e)
@@ -483,6 +517,19 @@ namespace linkedlist_quanly
 
             if (userManager.RegisterUser(txtUsername.Text, txtPassword.Text))
             {
+                // Nếu có chọn ảnh thì lưu ảnh
+                if (!string.IsNullOrEmpty(selectedAvatarPath))
+                {
+                    // Tạo thư mục avatars nếu chưa có
+                    string avatarDirectory = Path.Combine(Application.StartupPath, "Avatars");
+                    Directory.CreateDirectory(avatarDirectory);
+
+                    // Tạo tên file mới và copy ảnh vào
+                    string extension = Path.GetExtension(selectedAvatarPath);
+                    string newAvatarPath = Path.Combine(avatarDirectory, $"{txtUsername.Text}{extension}");
+                    File.Copy(selectedAvatarPath, newAvatarPath, true);
+                }
+
                 MessageBox.Show("Đăng ký thành công!");
                 this.Close();
             }
